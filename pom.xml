@@ -1,0 +1,90 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.mse</groupId>
+  <artifactId>RestAssuredFramework</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <packaging>jar</packaging>
+
+  <name>RestAssuredFramework</name>
+  <url>http://maven.apache.org</url>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.source>11</maven.compiler.source>
+    <maven.compiler.target>11</maven.compiler.target>
+
+    <!-- Dependency Versions -->
+    <testng.version>7.11.0</testng.version>
+    <gson.version>2.12.1</gson.version>
+    <extent-reports.version>5.1.1</extent-reports.version>
+    <javafaker.version>1.0.2</javafaker.version>
+    <lombok.version>1.18.36</lombok.version>
+    <commons-lang3.version>3.17.0</commons-lang3.version>
+    <rest-assured.version>5.5.1</rest-assured.version>
+    <jackson.version>2.18.2</jackson.version>
+  </properties>
+
+  <dependencies>
+    <!-- TestNG: Test framework for structuring and executing test cases -->
+    <dependency>
+      <groupId>org.testng</groupId>
+      <artifactId>testng</artifactId>
+      <version>${testng.version}</version>
+      <scope>test</scope>
+    </dependency>
+
+    <!-- Gson: Converts Java objects to JSON and vice versa -->
+    <dependency>
+      <groupId>com.google.code.gson</groupId>
+      <artifactId>gson</artifactId>
+      <version>${gson.version}</version>
+    </dependency>
+
+    <!-- Extent Reports: Generates detailed test execution reports -->
+    <dependency>
+      <groupId>com.aventstack</groupId>
+      <artifactId>extentreports</artifactId>
+      <version>${extent-reports.version}</version>
+    </dependency>
+
+    <!-- JavaFaker: Generates fake test data (names, emails, phone numbers, etc.) -->
+    <dependency>
+      <groupId>com.github.javafaker</groupId>
+      <artifactId>javafaker</artifactId>
+      <version>${javafaker.version}</version>
+    </dependency>
+
+    <!-- Lombok: Reduces boilerplate code for POJOs (Getters, Setters, Constructors, etc.) -->
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <version>${lombok.version}</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <!-- Apache Commons Lang: Provides utility methods for Strings, Numbers, and Objects -->
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
+      <version>${commons-lang3.version}</version>
+    </dependency>
+
+    <!-- RestAssured: Simplifies API testing by providing an easy way to send HTTP requests -->
+    <dependency>
+      <groupId>io.rest-assured</groupId>
+      <artifactId>rest-assured</artifactId>
+      <version>${rest-assured.version}</version>
+      <scope>test</scope>
+    </dependency>
+
+    <!-- Jackson Databind: Handles JSON to Java Object Mapping (alternative to Gson) -->
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+      <version>${jackson.version}</version>
+    </dependency>
+
+  </dependencies>
+</project>
