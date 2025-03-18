@@ -2,48 +2,58 @@ package reporting;
 
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
+import com.aventstack.extentreports.markuputils.MarkupHelper;
+import com.aventstack.extentreports.markuputils.CodeLanguage;
 import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
 
-import java.lang.reflect.Array;
 import java.util.Arrays;
 
 public class SetUp implements ITestListener {
 
     private static ExtentReports extentReports;
-    public static ThreadLocal<ExtentTest> extentTestThreadLocal=new ThreadLocal<>();
+    public static ThreadLocal<ExtentTest> extentTestThreadLocal = new ThreadLocal<>();
+
+    @Override
     public void onStart(ITestContext context) {
-        String fileName=ExtentRepostManager.getReportNameWithTimeStamp();
-        String fullReportPath=System.getProperty("user.dir")+"/reports/"+fileName;
-        extentReports=ExtentRepostManager.CreateExtent(fullReportPath,"Test API Automation Report","API Test Execution Report");
+        String fileName = ExtentReportManager.getReportNameWithTimeStamp(); // ✅ Fixed typo
+        String fullReportPath = System.getProperty("user.dir") + "/reports/" + fileName;
+        extentReports = ExtentReportManager.getInstance(fullReportPath, "Test API Automation Report", "API Test Execution Report");
     }
 
     public void onFinish(ITestContext context) {
-        if(extentReports!=null)
-        {
+        if (extentReports != null) {
             extentReports.flush();
             System.out.println("✅ Extent Report generated successfully!");
+        } else {
+            System.err.println("❌ Extent Report was NOT initialized. Check ExtentReports setup.");
         }
     }
 
+
+    @Override
     public void onTestStart(ITestResult result) {
-        ExtentTest test = extentReports.createTest("Test Name " + result.getClass().getPackageName() + " _ " + result.getMethod().getMethodName());
+        if (extentReports == null) { // ✅ Prevent NullPointerException
+            System.err.println("❌ Error: ExtentReports is null. Ensure it is initialized.");
+            return;
+        }
+        ExtentTest test = extentReports.createTest(
+                "Test Name: " + result.getClass().getSimpleName() + " _ " + result.getMethod().getMethodName()
+        );
         extentTestThreadLocal.set(test);
     }
 
+    @Override
     public void onTestFailure(ITestResult result) {
-        ExtentRepostManager.logFailDetail(result.getThrowable().getMessage());
+        if (extentTestThreadLocal.get() == null) return; // ✅ Prevent NullPointerException
 
-       String stackTrace=Arrays.toString(result.getThrowable().getStackTrace());
-        stackTrace=stackTrace.replaceAll(",","<br>");
+        ExtentReportManager.logFailDetail(result.getThrowable().getMessage());
 
-        String formattedTrace = "<details>\n" +
-                "  <summary>Click here to see Exceptional log</summary>\n" +
-                stackTrace + "\n" + // ✅ Properly concatenate stackTrace
-                "</details>";
-
-        ExtentRepostManager.logExceptionDetails(formattedTrace);
+        // ✅ Format stack trace using ExtentReports Code Block
+        String stackTrace = Arrays.toString(result.getThrowable().getStackTrace());
+        ExtentReportManager.logExceptionDetails(
+                MarkupHelper.createCodeBlock(stackTrace, CodeLanguage.XML).getMarkup()
+        );
     }
-
 }
